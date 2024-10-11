@@ -11,6 +11,7 @@ func NewServer() *echo.Echo {
 	e := echo.New()
 
 	// Endpoints
+	e.GET("/api/v1/files", service.ListFilesHandler)
 	e.POST("/api/v1/savefile", service.SaveFileHandler)
 
 	return e
