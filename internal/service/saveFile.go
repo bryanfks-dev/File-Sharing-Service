@@ -4,6 +4,7 @@ import (
 	"io"
 	"main/core/constant"
 	"main/domain/entity"
+	"main/pkg/utils"
 	"net/http"
 	"os"
 
@@ -11,6 +12,7 @@ import (
 )
 
 // SaveFileHandler is a handler function that handles the save file endpoint
+// It saves the uploaded file to the server storage
 func SaveFileHandler(c echo.Context) error {
 	// Get uploaded file
 	file, err := c.FormFile("upload-file")
@@ -36,8 +38,11 @@ func SaveFileHandler(c echo.Context) error {
 
 	defer src.Close()
 
+	// Sanitize the file name
+	sanitizedFileName := utils.SantinizeFileName(file.Filename)
+
 	// Create a new file
-	dest, err := os.Create(constant.FILES_DIR + file.Filename)
+	dest, err := os.Create(constant.FILES_DIR + sanitizedFileName)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, entity.Response{

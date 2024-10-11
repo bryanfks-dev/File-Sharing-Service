@@ -10,6 +10,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// ListFilesHandler is a handler function that handles the list files endpoint
+// It reads the files from the files directory and returns the file data
 func ListFilesHandler(c echo.Context) error {
 	// Read files from the files directory
 	files, err := os.ReadDir("./" + constant.FILES_DIR)
@@ -25,7 +27,7 @@ func ListFilesHandler(c echo.Context) error {
 	}
 
 	// Create a slice of fileData
-	var fileData []entity.FileData
+	var fileData []entity.FileData = make([]entity.FileData, 0)
 
 	// Iterate over the files
 	for _, file := range files {
