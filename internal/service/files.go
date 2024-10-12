@@ -41,7 +41,7 @@ func ListFilesHandler(c echo.Context) error {
 
 		// Append the file data to the fileData slice
 		fileData = append(fileData, entity.FileData{
-			FileName:   file.Name(),
+			FileName:   fileInfo.Name(),
 			FileSize:   fileInfo.Size(),
 			FileType:   file.Type().String(),
 			UploadTime: fileInfo.ModTime().String(),

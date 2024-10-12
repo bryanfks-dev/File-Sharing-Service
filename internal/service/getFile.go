@@ -3,7 +3,6 @@ package service
 import (
 	"main/core/constant"
 	"main/domain/entity"
-	"main/pkg/utils"
 	"net/http"
 	"os"
 
@@ -38,5 +37,28 @@ func GetFileHandler(c echo.Context) error {
 
 	defer file.Close()
 
-	return c.Attachment(file.Name(), utils.RemoveDirName(file.Name()))
+	fi, err := file.Stat()
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, entity.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Failed to get file info",
+			Data:       nil,
+		})
+	}
+
+	var fileData []entity.FileData = make([]entity.FileData, 1)
+
+	fileData[0] = entity.FileData{
+		FileName:   fi.Name(),
+		FileSize:   fi.Size(),
+		FileType:   fi.Mode().String(),
+		UploadTime: fi.ModTime().String(),
+		FileURL:    "/api/v1/getfile/" + name,
+	}
+
+	return c.JSON(http.StatusOK, entity.Response{
+		StatusCode: http.StatusOK,
+		Message:    "File retrieved successfully",
+		Data:       fileData})
 }
