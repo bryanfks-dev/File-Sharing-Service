@@ -45,7 +45,7 @@ func ListFilesHandler(c echo.Context) error {
 			FileSize:   fileInfo.Size(),
 			FileType:   file.Type().String(),
 			UploadTime: fileInfo.ModTime().String(),
-			FileURL:    "/api/v1/getfile/" + file.Name(),
+			FileURL:    "/api/v1/files/" + file.Name(),
 		})
 	}
 

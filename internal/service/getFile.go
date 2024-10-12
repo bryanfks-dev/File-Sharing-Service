@@ -54,7 +54,7 @@ func GetFileHandler(c echo.Context) error {
 		FileSize:   fi.Size(),
 		FileType:   fi.Mode().String(),
 		UploadTime: fi.ModTime().String(),
-		FileURL:    "/api/v1/getfile/" + name,
+		FileURL:    "/api/v1/files/" + name,
 	}
 
 	return c.JSON(http.StatusOK, entity.Response{
