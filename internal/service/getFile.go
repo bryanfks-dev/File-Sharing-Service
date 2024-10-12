@@ -1,6 +1,7 @@
 package service
 
 import (
+	"log"
 	"main/core/constant"
 	"main/domain/entity"
 	"main/pkg/utils"
@@ -29,6 +30,8 @@ func GetFileHandler(c echo.Context) error {
 	file, err := os.Open("./" + constant.FILES_DIR + name)
 
 	if err != nil {
+		log.Fatal(err)
+
 		return c.JSON(http.StatusInternalServerError, entity.Response{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "Failed to read file",
@@ -42,6 +45,8 @@ func GetFileHandler(c echo.Context) error {
 	fileInfo, err := file.Stat()
 
 	if err != nil {
+		log.Fatal(err)
+
 		return c.JSON(http.StatusInternalServerError, entity.Response{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "Failed to get file info",

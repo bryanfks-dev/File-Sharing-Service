@@ -2,6 +2,7 @@ package service
 
 import (
 	"io"
+	"log"
 	"main/core/constant"
 	"main/domain/entity"
 	"main/pkg/utils"
@@ -18,6 +19,8 @@ func SaveFileHandler(c echo.Context) error {
 	file, err := c.FormFile("upload-file")
 
 	if err != nil {
+		log.Fatal(err)
+
 		return c.JSON(http.StatusBadRequest, entity.Response{
 			StatusCode: http.StatusBadRequest,
 			Message:    "No file uploaded",
@@ -29,6 +32,8 @@ func SaveFileHandler(c echo.Context) error {
 	src, err := file.Open()
 
 	if err != nil {
+		log.Fatal(err)
+
 		return c.JSON(http.StatusBadRequest, entity.Response{
 			StatusCode: http.StatusBadRequest,
 			Message:    "Error opening the file",
@@ -45,6 +50,8 @@ func SaveFileHandler(c echo.Context) error {
 	dest, err := os.Create(constant.FILES_DIR + sanitizedFileName)
 
 	if err != nil {
+		log.Fatal(err)
+
 		return c.JSON(http.StatusInternalServerError, entity.Response{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "Error creating a new file",
@@ -56,6 +63,8 @@ func SaveFileHandler(c echo.Context) error {
 
 	// Copy the uploaded file to the new file
 	if _, err := io.Copy(dest, src); err != nil {
+		log.Fatal(err)
+
 		return c.JSON(http.StatusInternalServerError, entity.Response{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "Error copying the file into new file",
