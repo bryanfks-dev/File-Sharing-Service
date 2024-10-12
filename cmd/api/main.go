@@ -2,8 +2,6 @@ package main
 
 import (
 	"main/internal/server"
-
-	"github.com/joho/godotenv"
 )
 
 // startServer is a helper function that starts the echo server.
@@ -17,7 +15,5 @@ func startServer() {
 
 // main is the entry point for the application.
 func main() {
-	godotenv.Load()
-
 	startServer()
 }
