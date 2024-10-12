@@ -1,7 +1,5 @@
 # File-Sharing-Service
 
----
-
 This is a simple file sharing service using go, echo web framework, and REST API, which only reads files from the server storage without database system.
 
 **With this simple service, you can do:**
