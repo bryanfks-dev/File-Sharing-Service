@@ -3,6 +3,7 @@ package service
 import (
 	"main/core/constant"
 	"main/domain/entity"
+	"main/pkg/utils"
 	"net/http"
 	"os"
 
@@ -37,7 +38,8 @@ func GetFileHandler(c echo.Context) error {
 
 	defer file.Close()
 
-	fi, err := file.Stat()
+	// Get the file info
+	fileInfo, err := file.Stat()
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, entity.Response{
@@ -47,13 +49,15 @@ func GetFileHandler(c echo.Context) error {
 		})
 	}
 
+	// Create a slice of file data
 	var fileData []entity.FileData = make([]entity.FileData, 1)
 
+	// Append the file data to the slice
 	fileData[0] = entity.FileData{
-		FileName:   fi.Name(),
-		FileSize:   fi.Size(),
-		FileType:   fi.Mode().String(),
-		UploadTime: fi.ModTime().String(),
+		FileName:   fileInfo.Name(),
+		FileSize:   fileInfo.Size(),
+		FileType:   utils.GetFileType(utils.GetFileExt(fileInfo.Name())).Label(),
+		UploadTime: fileInfo.ModTime().String(),
 		FileURL:    "/api/v1/files/" + name,
 	}
 

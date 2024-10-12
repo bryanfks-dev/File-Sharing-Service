@@ -4,6 +4,7 @@ import (
 	"log"
 	"main/core/constant"
 	"main/domain/entity"
+	"main/pkg/utils"
 	"net/http"
 	"os"
 
@@ -43,7 +44,7 @@ func ListFilesHandler(c echo.Context) error {
 		fileData = append(fileData, entity.FileData{
 			FileName:   fileInfo.Name(),
 			FileSize:   fileInfo.Size(),
-			FileType:   file.Type().String(),
+			FileType:   utils.GetFileType(utils.GetFileExt(fileInfo.Name())).Label(),
 			UploadTime: fileInfo.ModTime().String(),
 			FileURL:    "/api/v1/files/" + file.Name(),
 		})
