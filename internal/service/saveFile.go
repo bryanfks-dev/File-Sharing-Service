@@ -72,9 +72,34 @@ func SaveFileHandler(c echo.Context) error {
 		})
 	}
 
+	// Get the file info
+	fileInfo, err := dest.Stat()
+
+	if err != nil {
+		log.Fatal(err)
+
+		return c.JSON(http.StatusInternalServerError, entity.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Error getting the file info",
+			Data:       nil,
+		})
+	}
+
+	// Create a new file data
+	var fileData []entity.FileData = make([]entity.FileData, 1)
+
+	// Append the file data
+	fileData[0] = entity.FileData{
+		FileName:   sanitizedFileName,
+		FileSize:   file.Size,
+		FileType:   utils.GetFileType(utils.GetFileExt(file.Filename)).Label(),
+		UploadTime: fileInfo.ModTime().String(),
+		FileURL:    "/api/v1/files/" + sanitizedFileName,
+	}
+
 	return c.JSON(http.StatusOK, entity.Response{
 		StatusCode: http.StatusOK,
 		Message:    "File uploaded successfully",
-		Data:       nil,
+		Data:       fileData,
 	})
 }
